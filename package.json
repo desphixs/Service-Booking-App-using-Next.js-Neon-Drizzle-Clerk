@@ -1,26 +1,40 @@
 {
-  "name": "servicebookingapp",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.1.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.1",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "name": "servicebookingapp",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "eslint",
+        "db:generate": "drizzle-kit generate --config=db/drizzle.config.ts",
+        "db:migrate": "drizzle-kit migrate --config=db/drizzle.config.ts",
+        "db:push": "drizzle-kit push --config=db/drizzle.config.ts",
+        "db:studio": "drizzle-kit studio --config=db/drizzle.config.ts"
+    },
+    "dependencies": {
+        "@clerk/nextjs": "^6.36.5",
+        "@neondatabase/serverless": "^1.0.2",
+        "@uploadthing/react": "^7.3.3",
+        "drizzle-orm": "^0.45.1",
+        "lucide-react": "^0.562.0",
+        "next": "16.1.1",
+        "next-themes": "^0.4.6",
+        "react": "19.2.3",
+        "react-dom": "19.2.3",
+        "sonner": "^2.0.7",
+        "uploadthing": "^7.7.4"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "dotenv": "^17.2.3",
+        "drizzle-kit": "^0.31.8",
+        "eslint": "^9",
+        "eslint-config-next": "16.1.1",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    }
 }
