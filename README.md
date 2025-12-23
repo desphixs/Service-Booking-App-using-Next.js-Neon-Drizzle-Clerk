@@ -7,7 +7,7 @@ A modern, full-stack service booking application built with **Next.js 16**, **Cl
 ### **🚀 Tech Stack**
 
 -   **Framework:** Next.js 16 (App Router)
--   **Auth:** Clerk (Modern 2025 Middleware & Route Groups)
+-   **Auth:** Clerk (Modern 2026 Middleware & Route Groups)
 -   **Database:** Neon (Serverless PostgreSQL)
 -   **ORM:** Drizzle ORM
 -   **Styling:** Tailwind CSS + Lucide Icons
