@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## **BookMe – Premium Service Booking Platform**
 
-## Getting Started
+A modern, full-stack service booking application built with **Next.js 16**, **Clerk**, **Drizzle ORM**, and **Neon**. This platform enables service providers to list offerings and customers to book time slots seamlessly.
 
-First, run the development server:
+---
+
+### **🚀 Tech Stack**
+
+-   **Framework:** Next.js 16 (App Router)
+-   **Auth:** Clerk (Modern 2025 Middleware & Route Groups)
+-   **Database:** Neon (Serverless PostgreSQL)
+-   **ORM:** Drizzle ORM
+-   **Styling:** Tailwind CSS + Lucide Icons
+-   **File Uploads:** UploadThing (2GB Free Tier)
+-   **Notifications:** Sonner
+
+---
+
+### **📁 Project Structure**
+
+```text
+├── app/
+│   ├── (main)/          # Public marketing pages (Hero, Services)
+│   ├── (dashboard)/     # Protected User/Admin Dashboard
+│   ├── api/             # UploadThing & Clerk Webhooks
+│   └── layout.tsx       # Global ClerkProvider & Root styles
+├── db/
+│   ├── schema.ts        # Database Tables (Services, Bookings, Payments)
+│   └── index.ts         # Drizzle/Neon Connection
+├── components/
+│   ├── ui/              # Clean, modern UI components
+│   └── admin/           # Dashboard forms & management tools
+└── drizzle.config.ts    # Migration settings
+
+```
+
+---
+
+### **🛠️ Getting Started**
+
+#### **1. Clone & Install**
+
+```bash
+git clone https://github.com/yourusername/bookme.git
+cd bookme
+npm install
+
+```
+
+#### **2. Environment Setup**
+
+Create a `.env.local` file in the root:
+
+```env
+# Database
+DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
+
+# Clerk Auth
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
+CLERK_SECRET_KEY=sk_...
+
+# UploadThing
+UPLOADTHING_SECRET=sk_...
+UPLOADTHING_APP_ID=...
+
+```
+
+#### **3. Database Sync**
+
+Push your schema to Neon:
+
+```bash
+npx drizzle-kit push
+
+```
+
+#### **4. Run Locally**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### **✨ Key Features**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+-   **Dynamic Dashboard:** Responsive sidebar with real-time booking stats.
+-   **Service Management:** Unified "Mode-Aware" form for creating and editing services with image uploads.
+-   **Advanced UI:** Vertical-stacking time slot and perk management to prevent layout overflow.
+-   **Auth Middleware:** Centralized protection for `/dashboard` and `/admin` routes.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+### **📝 License**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License. Feel free to use this for your startup or portfolio!
