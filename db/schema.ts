@@ -1,11 +1,29 @@
 import { pgTable, text, integer, timestamp, boolean, uuid, varchar, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
+export const providers = pgTable("providers", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id").notNull().unique(), // Clerk User ID for the Provider
+    email: varchar("email", { length: 255 }).notNull(),
+    fullName: text("full_name").notNull(),
+    bio: text("bio"), // Professional summary for their profile
+    image: text("image"), // Profile/Business photo
+    phone: varchar("phone", { length: 20 }),
+
+    // Business Details
+    businessName: text("business_name"),
+    website: text("website"),
+
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const customers = pgTable("customers", {
     id: uuid("id").primaryKey().defaultRandom(),
     userId: text("user_id").notNull().unique(), // Clerk User ID
     email: varchar("email", { length: 255 }).notNull(),
     fullName: text("full_name").notNull(),
+    image: text("image"),
     phone: varchar("phone", { length: 20 }),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -23,7 +41,7 @@ export const services = pgTable("services", {
     included: jsonb("included").$type<string[]>(), // Array of perks
     timeSlots: jsonb("time_slots").$type<string[]>(), // Available times
     price: integer("price").notNull(), // stored in cents
-    currency: varchar("currency", { length: 10 }).default("NGN"),
+    currency: varchar("currency", { length: 10 }).default("USD"),
     durationMinutes: integer("duration_minutes").default(60),
     isActive: boolean("is_active").default(true),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -47,11 +65,26 @@ export const bookings = pgTable("bookings", {
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// --- Relationships ---
+// 1. Customers can have many bookings
 export const customerRelations = relations(customers, ({ many }) => ({
     bookings: many(bookings),
 }));
 
+// 2. Providers can own many services
+export const providerRelations = relations(providers, ({ many }) => ({
+    services: many(services),
+}));
+
+// 3. Services belong to one Provider and can have many Bookings
+export const serviceRelations = relations(services, ({ one, many }) => ({
+    provider: one(providers, {
+        fields: [services.userId],
+        references: [providers.userId],
+    }),
+    bookings: many(bookings),
+}));
+
+// 4. Bookings link one Service and one Customer
 export const bookingRelations = relations(bookings, ({ one }) => ({
     service: one(services, {
         fields: [bookings.serviceId],

@@ -15,6 +15,20 @@
       "when": 1766445902170,
       "tag": "0001_ambiguous_prodigy",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1766511418809,
+      "tag": "0002_warm_rumiko_fujikawa",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1766512076920,
+      "tag": "0003_dusty_black_cat",
+      "breakpoints": true
     }
   ]
 }

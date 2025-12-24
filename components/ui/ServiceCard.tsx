@@ -9,7 +9,7 @@ export const ServiceCard = ({ service }: { service: any }) => {
     }).format(service.price_cents / 100);
 
     return (
-        <div className="group bg-white border border-gray-100 rounded-3xl p-6 transition-all duration-300 shadow-xl hover:border-indigo-100 hover:shadow-xl hover:shadow-indigo-500/5">
+        <div className="group bg-white border border-gray-100 rounded-3xl p-6 transition-all duration-300 shadow-xl hover:border-indigo-100 hover:shadow-xl hover:shadow-indigo-500/5 font-['Plus_Jakarta_Sans']">
             {service.image && (
                 <div className="mb-4">
                     <img src={service.image} alt={service.title} className="w-full h-48 object-cover rounded-xl" />
@@ -37,9 +37,9 @@ export const ServiceCard = ({ service }: { service: any }) => {
             <div className="flex items-center justify-between pt-6 border-t border-gray-50">
                 <div>
                     <p className="text-xs text-gray-400 uppercase font-bold tracking-wider">Starting at</p>
-                    <p className="text-lg font-black text-gray-900">{formattedPrice}</p>
+                    <p className="text-lg font-black text-gray-900">${service.price}</p>
                 </div>
-                <Link href={`/${service.slug}`} className="h-12 w-12 rounded-2xl bg-gray-50 text-gray-900 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                <Link href={`/service/${service.slug}`} className="h-12 w-12 rounded-2xl bg-gray-50 text-gray-900 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
                     <ArrowRight className="w-5 h-5" />
                 </Link>
             </div>

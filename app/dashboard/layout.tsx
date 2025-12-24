@@ -1,7 +1,14 @@
-import React from "react";
-import { LayoutDashboard, Calendar, Settings, LogOut, User } from "lucide-react";
+"use client";
+import React, { useState } from "react";
+import { LayoutDashboard, Calendar, Settings, LogOut, User, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { SignOutButton } from "@clerk/nextjs";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function UserDashboardLayout({ children }: { children: React.ReactNode }) {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const pathname = usePathname();
+
     const navItems = [
         { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
         { name: "My Bookings", href: "/dashboard/bookings", icon: Calendar },
@@ -9,48 +16,79 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     ];
 
     return (
-        <div className="flex min-h-screen bg-gray-50/50">
-            {/* Sidebar: Use fixed and a z-index to keep it on top */}
-            <aside className="hidden md:flex w-72 flex-col   bg-white border-r border-gray-100 p-6 z-50">
-                <div className="flex items-center gap-2 mb-10 px-2">
-                    <div className="bg-indigo-600 p-1.5 rounded-lg">
-                        <Calendar className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-gray-900">BookMe</span>
+        <div className="flex min-h-screen bg-[#F8FAFC] font-['Plus_Jakarta_Sans']">
+            {/* 1. Mobile Overlay (Backdrop) */}
+            {isSidebarOpen && <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] lg:hidden transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />}
+
+            {/* 2. Responsive Sidebar */}
+            <aside
+                className={`
+                fixed lg:sticky top-0 left-0 h-screen w-72 bg-white border-r border-slate-100 p-8 flex flex-col z-[70] 
+                transition-transform duration-500 ease-in-out
+                ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+            `}
+            >
+                {/* Logo & Close Button */}
+                <div className="flex items-center justify-between mb-12 px-2">
+                    <Link href="/" className="flex items-center gap-3">
+                        <div className="bg-indigo-600 p-2 rounded-xl shadow-lg shadow-indigo-100">
+                            <Calendar className="w-5 h-5 text-white" />
+                        </div>
+                        <span className="text-2xl font-black tracking-tight text-slate-900">BookMe</span>
+                    </Link>
+                    <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-2 text-slate-400">
+                        <X className="w-6 h-6" />
+                    </button>
                 </div>
 
-                <nav className="flex-1 space-y-1">
-                    {navItems.map((item) => (
-                        <a key={item.name} href={item.href} className="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl transition-all text-gray-500 hover:text-indigo-600 hover:bg-indigo-50/50">
-                            <item.icon className="w-5 h-5" />
-                            {item.name}
-                        </a>
-                    ))}
+                <nav className="flex-1 space-y-2">
+                    {navItems.map((item) => {
+                        const isActive = pathname === item.href;
+                        return (
+                            <Link key={item.name} href={item.href} onClick={() => setIsSidebarOpen(false)} className={`flex items-center gap-4 px-5 py-3.5 text-sm font-bold rounded-2xl transition-all ${isActive ? "bg-indigo-600 text-white shadow-xl shadow-indigo-100" : "text-slate-400 hover:text-indigo-600 hover:bg-indigo-50/50"}`}>
+                                <item.icon className={`w-5 h-5 ${isActive ? "text-white" : ""}`} />
+                                {item.name}
+                            </Link>
+                        );
+                    })}
                 </nav>
 
-                <div className="pt-6 border-t border-gray-100">
-                    <button className="flex items-center gap-3 w-full px-4 py-3 text-sm font-semibold text-red-500 hover:bg-red-50 rounded-xl transition-colors">
-                        <LogOut className="w-5 h-5" />
-                        Sign Out
-                    </button>
+                {/* Bottom Sign Out */}
+                <div className="pt-8 border-t border-slate-100">
+                    <SignOutButton>
+                        <button className="flex items-center gap-4 w-full px-5 py-4 text-sm font-bold text-rose-500 hover:bg-rose-50 rounded-2xl transition-all">
+                            <LogOut className="w-5 h-5" />
+                            Sign Out
+                        </button>
+                    </SignOutButton>
                 </div>
             </aside>
 
-            <div className="flex-1 flex flex-col ml-30 min-h-screen">
-                <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-40">
-                    <h2 className="font-bold text-gray-800">User Dashboard</h2>
+            {/* 3. Main Content Wrapper */}
+            <div className="flex-1 flex flex-col min-h-screen min-w-0">
+                <header className="h-24 bg-white/90 backdrop-blur-lg border-b border-slate-100 flex items-center justify-between px-6 md:px-10 sticky top-0 z-40">
                     <div className="flex items-center gap-4">
+                        {/* Mobile Menu Trigger */}
+                        <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-3 bg-slate-50 rounded-xl border border-slate-100 text-slate-600 active:scale-95 transition-all">
+                            <Menu className="w-6 h-6" />
+                        </button>
+                        <h2 className="text-sm font-black uppercase tracking-widest text-slate-400 hidden sm:block">User Dashboard</h2>
+                    </div>
+
+                    <div className="flex items-center gap-5">
                         <div className="text-right hidden sm:block">
-                            <p className="text-sm font-bold text-gray-900">Destiny Franks</p>
-                            <p className="text-xs text-gray-400">Premium Member</p>
+                            <p className="text-sm font-black text-slate-900 leading-tight">Destiny Franks</p>
+                            <p className="text-[11px] font-bold text-indigo-500 uppercase tracking-tighter">Premium Member</p>
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center border border-indigo-200">
-                            <User className="w-5 h-5 text-indigo-600" />
+                        <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-slate-100">
+                            <User className="w-6 h-6 text-indigo-600" />
                         </div>
                     </div>
                 </header>
 
-                <main className="p-8 max-w-6xl w-full mx-auto">{children}</main>
+                <main className="flex-1 flex items-start justify-center p-6 md:p-10">
+                    <div className="w-full max-w-5xl mx-auto">{children}</div>
+                </main>
             </div>
         </div>
     );
